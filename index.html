@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌹 Um Ato de Emoção</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Lato', Georgia, serif;
+      background: linear-gradient(160deg, #ffe4ef 0%, #f5d0f0 40%, #dcc8f5 80%, #ccc0f7 100%);
+      min-height: 100vh;
+      color: #3a2040;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 3.5rem 1.5rem 2rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 600;
+      color: #5a1a4a;
+      letter-spacing: 0.01em;
+      margin-bottom: 1.5rem;
+    }
+
+    .intro {
+      max-width: 620px;
+      margin: 0 auto;
+      font-size: 1.13rem;
+      line-height: 1.85;
+      color: #5a3060;
+      font-weight: 300;
+      font-family: Georgia, serif;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      max-width: 480px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #c890d8, transparent);
+    }
+
+    .divider-icon {
+      color: #b060b0;
+      font-size: 1.1rem;
+    }
+
+    /* ── Quotes ── */
+    .quotes-section {
+      max-width: 680px;
+      margin: 0 auto 1rem;
+      padding: 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .quote-card {
+      background: rgba(255, 255, 255, 0.45);
+      border-left: 3px solid #c078c8;
+      border-radius: 0 12px 12px 0;
+      padding: 1.2rem 1.5rem;
+    }
+
+    .quote-card p {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: 1.08rem;
+      color: #5a1a5a;
+      line-height: 1.7;
+    }
+
+    /* ── Section ── */
+    .section {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: #5a1a4a;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── Music Player ── */
+    .music-player {
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: 20px;
+      border: 1.5px solid rgba(200, 140, 220, 0.4);
+      padding: 2rem 1.5rem 1.8rem;
+      box-shadow: 0 4px 24px rgba(160, 80, 160, 0.14);
+      max-width: 500px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .album-art {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f5b8d8, #c890e8, #a8a0f8);
+      margin: 0 auto 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.6rem;
+      box-shadow: 0 2px 16px rgba(160, 80, 160, 0.22);
+      transition: transform 0.3s;
+    }
+
+    .album-art.playing {
+      animation: spin 8s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    .track-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #5a1a4a;
+      margin-bottom: 0.15rem;
+    }
+
+    .track-artist {
+      font-size: 0.85rem;
+      color: #9060a0;
+      margin-bottom: 1.3rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* Barra de progresso */
+    .progress-wrap {
+      margin-bottom: 0.4rem;
+      cursor: pointer;
+    }
+
+    .progress-bg {
+      width: 100%;
+      height: 5px;
+      background: rgba(180, 100, 200, 0.18);
+      border-radius: 3px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #c060c8, #9060d0);
+      border-radius: 3px;
+      transition: width 0.3s linear;
+      pointer-events: none;
+    }
+
+    .time-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.76rem;
+      color: #9060a0;
+      margin-bottom: 1.3rem;
+    }
+
+    /* Controles */
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .ctrl-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #9060a0;
+      font-size: 1.4rem;
+      padding: 6px;
+      border-radius: 50%;
+      transition: background 0.15s, color 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .ctrl-btn:hover {
+      background: rgba(180, 100, 200, 0.12);
+      color: #5a1a4a;
+    }
+
+    .play-btn {
+      background: linear-gradient(135deg, #c060c8, #9060d0);
+      color: white;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 14px rgba(160, 80, 200, 0.32);
+      transition: transform 0.1s, box-shadow 0.1s;
+      line-height: 1;
+    }
+
+    .play-btn:hover {
+      transform: scale(1.06);
+      box-shadow: 0 4px 20px rgba(160, 80, 200, 0.42);
+    }
+
+    /* Volume */
+    .volume-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .volume-icon {
+      font-size: 0.95rem;
+      color: #9060a0;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    input[type="range"].volume-bar {
+      width: 90px;
+      height: 3px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: rgba(180, 100, 200, 0.25);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"].volume-bar::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #b060c0;
+      cursor: pointer;
+    }
+
+    input[type="range"].volume-bar::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #b060c0;
+      cursor: pointer;
+      border: none;
+    }
+
+    /* ── Mensagem Final ── */
+    .mensagem-card {
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 16px;
+      padding: 2rem;
+      border: 1.5px solid rgba(200, 140, 220, 0.35);
+      text-align: center;
+    }
+
+    .mensagem-card p {
+      font-family: Georgia, serif;
+      font-size: 1.08rem;
+      line-height: 1.9;
+      color: #4a1a50;
+    }
+
+    .mensagem-card .highlight {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.18rem;
+      font-style: italic;
+      color: #7a3090;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem 2.5rem;
+      font-family: Georgia, serif;
+      font-size: 0.95rem;
+      color: #7a4080;
+      letter-spacing: 0.05em;
+      border-top: 1px solid rgba(180, 100, 200, 0.2);
+      margin-top: 1rem;
+    }
+
+    /* ── Responsivo ── */
+    @media (max-width: 480px) {
+      .hero { padding: 2.5rem 1rem 1.5rem; }
+      .music-player { padding: 1.5rem 1rem; }
+      .section { padding: 1.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>🌹 Um Ato de Emoção</h1>
+    <p class="intro">
+      Não é a surpresa que você esperava e tudo bem.<br>
+      É algo mais simples, mas igualmente verdadeiro: um gesto sincero, construído com cuidado,
+      para alguém que eu amo profundamente. Alguém que carrega no coração um amor todo seu
+      e merece ter esse sentimento celebrado, com toda a beleza que ele merece.
+    </p>
+  </div>
+
+  <!-- Divider -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <span class="divider-icon">✦</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- Quotes -->
+  <div class="quotes-section">
+    <div class="quote-card">
+      <p>"Amar é sentir que o mundo cabe em um olhar."</p>
+    </div>
+    <div class="quote-card">
+      <p>"Nem sempre o destino nos permite viver o que sonhamos,<br>
+         mas sempre podemos celebrar o que sentimos."</p>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <span class="divider-icon">✦</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- Música da Alma -->
+  <div class="section">
+    <h2 class="section-title">🎶 Música da Alma</h2>
+
+    <div class="music-player">
+      <div class="album-art" id="albumArt">🌹</div>
+
+      <p class="track-title">Magia / Second Time</p>
+      <p class="track-artist">Pejota, VMZ, Tauz, Rodrigo Zin, Oninho, Lylo, JKZ, Lex &amp; Akashi</p>
+
+      <!-- Barra de progresso clicável -->
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bg">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+      <div class="time-row">
+        <span id="timeCurrent">0:00</span>
+        <span id="timeDuration">0:00</span>
+      </div>
+
+      <!-- Controles -->
+      <div class="controls">
+        <button class="ctrl-btn" id="btnRewind" title="Voltar 10s">⏮</button>
+        <button class="play-btn" id="btnPlay">▶</button>
+        <button class="ctrl-btn" id="btnForward" title="Avançar 10s">⏭</button>
+      </div>
+
+      <!-- Volume -->
+      <div class="volume-row">
+        <span class="volume-icon" id="volIcon">🔈</span>
+        <input type="range" class="volume-bar" id="volumeBar" min="0" max="1" step="0.01" value="0.8">
+        <span class="volume-icon">🔊</span>
+      </div>
+    </div>
+
+    <!--
+      ✏️ IMPORTANTE:
+      O arquivo de música deve estar na MESMA PASTA que este HTML.
+      Nome do arquivo: magia---secondtime-pejota-vmz-tauz-rodrigo-zin-oninho-lylo-jkz-lex-e-akashi.mp3
+    -->
+    <audio id="audioPlayer" preload="metadata">
+      <source src="magia---secondtime-pejota-vmz-tauz-rodrigo-zin-oninho-lylo-jkz-lex-e-akashi.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <!-- Mensagem Final -->
+  <div class="section">
+    <h2 class="section-title">✨ Mensagem Final</h2>
+    <div class="mensagem-card">
+      <p>
+        Este espaço foi criado como uma <span class="highlight">celebração</span> —
+        não de datas ou marcos, mas de sentimentos.<br><br>
+        Sentimentos intensos, honestos, que às vezes não cabem em palavras,
+        mas encontram morada na música, nas imagens e no silêncio entre uma frase e outra.<br><br>
+        <span class="highlight">Que este gesto chegue até você como a luz chega pela manhã:<br>
+        suave, inevitável e cheia de beleza.</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    🌌 Criado com sinceridade e emoção.
+  </footer>
+
+  <script>
+    var audio = document.getElementById('audioPlayer');
+    var btnPlay = document.getElementById('btnPlay');
+    var albumArt = document.getElementById('albumArt');
+    var progressFill = document.getElementById('progressFill');
+    var progressWrap = document.getElementById('progressWrap');
+    var timeCurrent = document.getElementById('timeCurrent');
+    var timeDuration = document.getElementById('timeDuration');
+    var volumeBar = document.getElementById('volumeBar');
+    var volIcon = document.getElementById('volIcon');
+
+    function fmtTime(s) {
+      s = Math.floor(s || 0);
+      var m = Math.floor(s / 60);
+      var sec = s % 60;
+      return m + ':' + (sec < 10 ? '0' : '') + sec;
+    }
+
+    // Duração ao carregar metadados
+    audio.addEventListener('loadedmetadata', function () {
+      timeDuration.textContent = fmtTime(audio.duration);
+    });
+
+    // Atualiza progresso
+    audio.addEventListener('timeupdate', function () {
+      timeCurrent.textContent = fmtTime(audio.currentTime);
+      if (audio.duration) {
+        progressFill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+      }
+    });
+
+    // Ao terminar
+    audio.addEventListener('ended', function () {
+      btnPlay.textContent = '▶';
+      albumArt.classList.remove('playing');
+    });
+
+    // Play / Pause
+    btnPlay.addEventListener('click', function () {
+      if (audio.paused) {
+        audio.play();
+        btnPlay.textContent = '⏸';
+        albumArt.classList.add('playing');
+      } else {
+        audio.pause();
+        btnPlay.textContent = '▶';
+        albumArt.classList.remove('playing');
+      }
+    });
+
+    // Voltar 10s
+    document.getElementById('btnRewind').addEventListener('click', function () {
+      audio.currentTime = Math.max(0, audio.currentTime - 10);
+    });
+
+    // Avançar 10s
+    document.getElementById('btnForward').addEventListener('click', function () {
+      audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 10);
+    });
+
+    // Clique na barra de progresso
+    progressWrap.addEventListener('click', function (e) {
+      var rect = progressWrap.getBoundingClientRect();
+      var pct = (e.clientX - rect.left) / rect.width;
+      audio.currentTime = pct * (audio.duration || 0);
+    });
+
+    // Volume
+    volumeBar.addEventListener('input', function () {
+      audio.volume = this.value;
+      volIcon.textContent = this.value == 0 ? '🔇' : this.value < 0.5 ? '🔈' : '🔊';
+    });
+
+    // Mute ao clicar no ícone
+    volIcon.addEventListener('click', function () {
+      audio.muted = !audio.muted;
+      volIcon.textContent = audio.muted ? '🔇' : '🔊';
+    });
+  </script>
+
+</body>
+</html>
